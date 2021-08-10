@@ -1,0 +1,70 @@
+
+    public class EngineTuned : CarEvent
+    {
+        public int MaxRpm { get; set; }
+    }
+
+-----------------------------
+
+
+        void EngineTuned(DateTime date, int mileage, decimal cost, int maxRpm);
+
+
+---------------------------------
+
+        public void EngineTuned(DateTime date, int mileage, decimal cost, int maxRpm)
+        {
+            CheckMileage(mileage);
+
+            var @event = CarEventFactory.Create<EngineTuned>(AggregateID, Version + 1, date, mileage, cost, i => i.MaxRpm = maxRpm);
+
+            Mutate(@event);
+
+            _eventStream.Add(@event);
+        }
+
+---------------------------------
+
+public class CarMaxRpmView
+    {
+        public int MaxRpm { get; set; }
+    }
+
+---------------------------------
+
+using System.Collections.Generic;
+using System.Linq;
+
+namespace SimpleEventSourcing
+{
+    public interface ICarMaxRpmViewProjector
+    {
+        CarMaxRpmView Project(IEnumerable<CarEvent> events);
+    }
+
+    public class CarMaxRpmViewProjector : ICarMaxRpmViewProjector
+    {
+        public CarMaxRpmView Project(IEnumerable<CarEvent> events) => new CarMaxRpmView
+        {
+            MaxRpm = events.OfType<EngineTuned>().Max(i => i.MaxRpm)
+        };
+    }
+}
+
+------------------------------------
+
+ [Fact]
+        public void Test5()
+        {
+            var aggregate = new CarAggregate("Bugati");
+
+            aggregate.EngineTuned(new DateTime(2021, 4, 4), 9000, 0M, 4000);
+            aggregate.EngineTuned(new DateTime(2021, 5, 5), 10000, 0M, 7000);
+            aggregate.EngineTuned(new DateTime(2021, 6, 6), 10000, 0M, 5000);
+
+            var projector = new CarMaxRpmViewProjector();
+
+            var view = projector.Project(aggregate.EventStream);
+
+            Assert.Equal(7000, view.MaxRpm);
+        }
