@@ -16,7 +16,7 @@ namespace SimpleEventSourcing
         public CarView Project(IEnumerable<CarEvent> events) => new CarView
         {
             TotalMainteances = events.Count(),
-            OilLastChanged = events.LastOrDefault(i => i.CarMaintenceType == CarEventTypes.OilChanged)?.Date,
+            OilLastChanged = events.OfType<OilChanged>().LastOrDefault()?.Date,
             AverageMaintenanceCost = events.Average(i => i.Cost)
         };
     }

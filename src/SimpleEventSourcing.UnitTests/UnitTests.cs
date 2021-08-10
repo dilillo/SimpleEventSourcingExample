@@ -14,9 +14,9 @@ namespace SimpleEventSourcing.UnitTests
         {
             var aggregate = new CarAggregate("Lambo");
 
-            aggregate.OilChanged(new DateTime(2021, 1, 1), 3000, 50M);
+            aggregate.OilChanged(new DateTime(2021, 1, 1), 3000, 50M, "5W-40");
             aggregate.BrakesServiced(new DateTime(2021, 3, 3), 6000, 250M);
-            aggregate.BatteryTested(new DateTime(2021, 4, 4), 9000, 0M);
+            aggregate.BatteryTested(new DateTime(2021, 4, 4), 9000, 0M, 2d);
 
             Assert.Equal(3, aggregate.Version);
             Assert.Equal(9000, aggregate.Mileage);
@@ -43,11 +43,11 @@ namespace SimpleEventSourcing.UnitTests
 
             aggregate.Load(new CarEvent[]
             {
-                new CarEvent(aggregateID, 1, CarEventTypes.OilChanged, new DateTime(2021, 1, 1), 3000, 50M),
-                new CarEvent(aggregateID, 2, CarEventTypes.BrakesServiced, new DateTime(2021, 3, 3), 6000, 250M)
+               CarEventFactory.Create<OilChanged>(aggregateID, 1, new DateTime(2021, 1, 1), 3000, 50M, i => i.OilType = "5W-40"),
+               CarEventFactory.Create<BrakesServiced>(aggregateID, 2, new DateTime(2021, 3, 3), 6000, 250M)
             });
 
-            aggregate.BatteryTested(new DateTime(2021, 4, 4), 9000, 0M);
+            aggregate.BatteryTested(new DateTime(2021, 4, 4), 9000, 0M, 2d);
 
             Assert.Equal(3, aggregate.Version);
             Assert.Equal(9000, aggregate.Mileage);
@@ -74,9 +74,9 @@ namespace SimpleEventSourcing.UnitTests
 
             aggregate.Load(new CarEvent[]
             {
-                new CarEvent(aggregateID, 1, CarEventTypes.OilChanged, new DateTime(2021, 1, 1), 3000, 50M),
-                new CarEvent(aggregateID, 2, CarEventTypes.BrakesServiced, new DateTime(2021, 3, 3), 6000, 250M),
-                new CarEvent(aggregateID, 3, CarEventTypes.BrakesServiced, new DateTime(2021, 4, 4), 9000, 0M)
+               CarEventFactory.Create<OilChanged>(aggregateID, 1, new DateTime(2021, 1, 1), 3000, 50M, i => i.OilType = "5W-40"),
+               CarEventFactory.Create<BrakesServiced>(aggregateID, 2, new DateTime(2021, 3, 3), 6000, 250M),
+               CarEventFactory.Create<BatteryTested>(aggregateID, 3, new DateTime(2021, 4, 4), 3000, 50M, i => i.BatteryLevel = 2d)
             });
 
             var projector = new CarViewProjector();
@@ -100,10 +100,10 @@ namespace SimpleEventSourcing.UnitTests
 
             aggregate.Load(new CarEvent[]
             {
-                new CarEvent(aggregateID, 1, CarEventTypes.OilChanged, new DateTime(2021, 1, 1), 3000, 50M)
+               CarEventFactory.Create<OilChanged>(aggregateID, 1, new DateTime(2021, 1, 1), 3000, 50M, i => i.OilType = "5W-40")
             });
 
-            Assert.Throws<CarException>(() => aggregate.BatteryTested(new DateTime(2021, 4, 4), 1000, 0M));
+            Assert.Throws<CarException>(() => aggregate.BatteryTested(new DateTime(2021, 4, 4), 1000, 0M, 2d));
         }
     }
 }
