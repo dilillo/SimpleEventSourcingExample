@@ -1,3 +1,4 @@
+--for CarEvents.cs...
 
     public class EngineTuned : CarEvent
     {
@@ -5,12 +6,10 @@
     }
 
 -----------------------------
-
+for CarAggregate.cs ...
 
         void EngineTuned(DateTime date, int mileage, decimal cost, int maxRpm);
 
-
----------------------------------
 
         public void EngineTuned(DateTime date, int mileage, decimal cost, int maxRpm)
         {
@@ -24,6 +23,7 @@
         }
 
 ---------------------------------
+for CarMaxRpmView.cs ...
 
 public class CarMaxRpmView
     {
@@ -31,17 +31,13 @@ public class CarMaxRpmView
     }
 
 ---------------------------------
+for CarMaxRpmViewProjector.cs ...
 
 using System.Collections.Generic;
 using System.Linq;
 
 namespace SimpleEventSourcing
 {
-    public interface ICarMaxRpmViewProjector
-    {
-        CarMaxRpmView Project(IEnumerable<CarEvent> events);
-    }
-
     public class CarMaxRpmViewProjector : ICarMaxRpmViewProjector
     {
         public CarMaxRpmView Project(IEnumerable<CarEvent> events) => new CarMaxRpmView
@@ -52,6 +48,7 @@ namespace SimpleEventSourcing
 }
 
 ------------------------------------
+for UnitTests.cs ...
 
  [Fact]
         public void Test5()

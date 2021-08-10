@@ -4,31 +4,10 @@ using System.Linq;
 
 namespace SimpleEventSourcing
 {
-    public interface ICarAggregate
-    {
-        string AggregateID { get; }
-
-        CarEvent[] EventStream { get; }
-
-        int Mileage { get; }
-
-        decimal TotalMaintenceCost { get; }
-
-        int Version { get; }
-
-        void Load(IEnumerable<CarEvent> eventStream);
-
-        void BatteryTested(DateTime date, int mileage, decimal cost, double batteryLevel);
-
-        void BrakesServiced(DateTime date, int mileage, decimal cost);
-
-        void OilChanged(DateTime date, int mileage, decimal cost, string oilType);
-    }
-
     /// <summary>
     /// Handles business logic by processing a stream of events.
     /// </summary>
-    public class CarAggregate : ICarAggregate
+    public class CarAggregate
     {
         public CarAggregate(string aggregateID)
         {
@@ -89,6 +68,17 @@ namespace SimpleEventSourcing
             CheckOil();
 
             var @event = CarEventFactory.Create<OilChanged>(AggregateID, Version + 1, date, mileage, cost, i => i.OilType = oilType);
+
+            Mutate(@event);
+
+            _eventStream.Add(@event);
+        }
+
+        public void EngineTuned(DateTime date, int mileage, decimal cost, int maxRpm)
+        {
+            CheckMileage(mileage);
+
+            var @event = CarEventFactory.Create<EngineTuned>(AggregateID, Version + 1, date, mileage, cost, i => i.MaxRpm = maxRpm);
 
             Mutate(@event);
 
