@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace SimpleEventSourcing
 {
-    public interface ICarMaintenanceViewProjector
+    public interface ICarViewProjector
     {
         CarView Project(IEnumerable<CarEvent> events);
     }
@@ -11,7 +11,7 @@ namespace SimpleEventSourcing
     /// <summary>
     /// Creates snapshots of car maintaince data by processing the event stream.
     /// </summary>
-    public class CarViewProjector : ICarMaintenanceViewProjector
+    public class CarViewProjector : ICarViewProjector
     {
         public CarView Project(IEnumerable<CarEvent> events) => new CarView
         {
