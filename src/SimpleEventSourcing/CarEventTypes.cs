@@ -3,7 +3,7 @@
     /// <summary>
     /// Types of maintenance that may be performed.
     /// </summary>
-    public enum CarMaintenceTypes
+    public enum CarEventTypes
     {
         OilChanged,
         BrakesServiced,

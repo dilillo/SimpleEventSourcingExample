@@ -5,9 +5,9 @@ namespace SimpleEventSourcing
     /// <summary>
     /// Represents violations of the business logic.
     /// </summary>
-    public class CarMaintenanceException : Exception
+    public class CarException : Exception
     {
-        public CarMaintenanceException(string message) : base(message)
+        public CarException(string message) : base(message)
         {
         }
     }

@@ -5,13 +5,13 @@ namespace SimpleEventSourcing
     /// <summary>
     /// Represents a single immutable occurance of a car maintenance event
     /// </summary>
-    public class CarMaintenanceEvent
+    public class CarEvent
     {
-        public CarMaintenanceEvent()
+        public CarEvent()
         {
         }
 
-        public CarMaintenanceEvent(string aggregateID, int version, CarMaintenceTypes type, DateTime date, int mileage, decimal cost)
+        public CarEvent(string aggregateID, int version, CarEventTypes type, DateTime date, int mileage, decimal cost)
         {
             AggregateID = aggregateID;
             CarMaintenceType = type;
@@ -34,6 +34,6 @@ namespace SimpleEventSourcing
 
         public decimal Cost { get; set; }
 
-        public CarMaintenceTypes CarMaintenceType { get; set; }
+        public CarEventTypes CarMaintenceType { get; set; }
     }
 }

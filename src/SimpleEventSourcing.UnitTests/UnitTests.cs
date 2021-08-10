@@ -22,7 +22,7 @@ namespace SimpleEventSourcing.UnitTests
             Assert.Equal(9000, aggregate.Mileage);
             Assert.Equal(300M, aggregate.TotalMaintenceCost);
 
-            var projector = new CarMaintenanceViewProjector();
+            var projector = new CarViewProjector();
 
             var view = projector.Project(aggregate.EventStream);
 
@@ -41,10 +41,10 @@ namespace SimpleEventSourcing.UnitTests
 
             var aggregate = new CarAggregate(aggregateID);
 
-            aggregate.Load(new CarMaintenanceEvent[]
+            aggregate.Load(new CarEvent[]
             {
-                new CarMaintenanceEvent(aggregateID, 1, CarMaintenceTypes.OilChanged, new DateTime(2021, 1, 1), 3000, 50M),
-                new CarMaintenanceEvent(aggregateID, 2, CarMaintenceTypes.BrakesServiced, new DateTime(2021, 3, 3), 6000, 250M)
+                new CarEvent(aggregateID, 1, CarEventTypes.OilChanged, new DateTime(2021, 1, 1), 3000, 50M),
+                new CarEvent(aggregateID, 2, CarEventTypes.BrakesServiced, new DateTime(2021, 3, 3), 6000, 250M)
             });
 
             aggregate.BatteryTested(new DateTime(2021, 4, 4), 9000, 0M);
@@ -53,7 +53,7 @@ namespace SimpleEventSourcing.UnitTests
             Assert.Equal(9000, aggregate.Mileage);
             Assert.Equal(300M, aggregate.TotalMaintenceCost);
 
-            var projector = new CarMaintenanceViewProjector();
+            var projector = new CarViewProjector();
 
             var view = projector.Project(aggregate.EventStream);
 
@@ -72,14 +72,14 @@ namespace SimpleEventSourcing.UnitTests
 
             var aggregate = new CarAggregate(aggregateID);
 
-            aggregate.Load(new CarMaintenanceEvent[]
+            aggregate.Load(new CarEvent[]
             {
-                new CarMaintenanceEvent(aggregateID, 1, CarMaintenceTypes.OilChanged, new DateTime(2021, 1, 1), 3000, 50M),
-                new CarMaintenanceEvent(aggregateID, 2, CarMaintenceTypes.BrakesServiced, new DateTime(2021, 3, 3), 6000, 250M),
-                new CarMaintenanceEvent(aggregateID, 3, CarMaintenceTypes.BrakesServiced, new DateTime(2021, 4, 4), 9000, 0M)
+                new CarEvent(aggregateID, 1, CarEventTypes.OilChanged, new DateTime(2021, 1, 1), 3000, 50M),
+                new CarEvent(aggregateID, 2, CarEventTypes.BrakesServiced, new DateTime(2021, 3, 3), 6000, 250M),
+                new CarEvent(aggregateID, 3, CarEventTypes.BrakesServiced, new DateTime(2021, 4, 4), 9000, 0M)
             });
 
-            var projector = new CarMaintenanceViewProjector();
+            var projector = new CarViewProjector();
 
             var view = projector.Project(aggregate.EventStream.Where(i => i.Date < new DateTime(2021, 3, 3)));
 
@@ -91,7 +91,6 @@ namespace SimpleEventSourcing.UnitTests
         /// <summary>
         /// Checks to validate an exception is thrown when invalid mileage is provided
         /// </summary>
-        /// 
         [Fact]
         public void Test4()
         {
@@ -99,12 +98,12 @@ namespace SimpleEventSourcing.UnitTests
 
             var aggregate = new CarAggregate(aggregateID);
 
-            aggregate.Load(new CarMaintenanceEvent[]
+            aggregate.Load(new CarEvent[]
             {
-                new CarMaintenanceEvent(aggregateID, 1, CarMaintenceTypes.OilChanged, new DateTime(2021, 1, 1), 3000, 50M)
+                new CarEvent(aggregateID, 1, CarEventTypes.OilChanged, new DateTime(2021, 1, 1), 3000, 50M)
             });
 
-            Assert.Throws<CarMaintenanceException>(() => aggregate.BatteryTested(new DateTime(2021, 4, 4), 1000, 0M));
+            Assert.Throws<CarException>(() => aggregate.BatteryTested(new DateTime(2021, 4, 4), 1000, 0M));
         }
     }
 }

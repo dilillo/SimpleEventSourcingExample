@@ -5,18 +5,18 @@ namespace SimpleEventSourcing
 {
     public interface ICarMaintenanceViewProjector
     {
-        CarMaintenanceView Project(IEnumerable<CarMaintenanceEvent> events);
+        CarView Project(IEnumerable<CarEvent> events);
     }
 
     /// <summary>
     /// Creates snapshots of car maintaince data by processing the event stream.
     /// </summary>
-    public class CarMaintenanceViewProjector : ICarMaintenanceViewProjector
+    public class CarViewProjector : ICarMaintenanceViewProjector
     {
-        public CarMaintenanceView Project(IEnumerable<CarMaintenanceEvent> events) => new CarMaintenanceView
+        public CarView Project(IEnumerable<CarEvent> events) => new CarView
         {
             TotalMainteances = events.Count(),
-            OilLastChanged = events.LastOrDefault(i => i.CarMaintenceType == CarMaintenceTypes.OilChanged)?.Date,
+            OilLastChanged = events.LastOrDefault(i => i.CarMaintenceType == CarEventTypes.OilChanged)?.Date,
             AverageMaintenanceCost = events.Average(i => i.Cost)
         };
     }

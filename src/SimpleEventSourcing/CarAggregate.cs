@@ -8,7 +8,7 @@ namespace SimpleEventSourcing
     {
         string AggregateID { get; }
 
-        CarMaintenanceEvent[] EventStream { get; }
+        CarEvent[] EventStream { get; }
 
         int Mileage { get; }
 
@@ -16,7 +16,7 @@ namespace SimpleEventSourcing
 
         int Version { get; }
 
-        void Load(IEnumerable<CarMaintenanceEvent> eventStream);
+        void Load(IEnumerable<CarEvent> eventStream);
 
         void BatteryTested(DateTime date, int mileage, decimal cost);
 
@@ -43,14 +43,14 @@ namespace SimpleEventSourcing
 
         public decimal TotalMaintenceCost { get; private set; }
 
-        private readonly List<CarMaintenanceEvent> _eventStream = new List<CarMaintenanceEvent>();
+        private readonly List<CarEvent> _eventStream = new List<CarEvent>();
 
-        public CarMaintenanceEvent[] EventStream
+        public CarEvent[] EventStream
         {
             get => _eventStream.ToArray();
         }
 
-        public void Load(IEnumerable<CarMaintenanceEvent> eventStream)
+        public void Load(IEnumerable<CarEvent> eventStream)
         {
             _eventStream.AddRange(eventStream);
 
@@ -64,7 +64,7 @@ namespace SimpleEventSourcing
         {
             CheckMileage(mileage);
 
-            var @event = CreateEvent(CarMaintenceTypes.BatteryTested, date, mileage, cost);
+            var @event = CreateCarEvent(CarEventTypes.BatteryTested, date, mileage, cost);
 
             Mutate(@event);
 
@@ -75,7 +75,7 @@ namespace SimpleEventSourcing
         {
             CheckMileage(mileage);
 
-            var @event = CreateEvent(CarMaintenceTypes.BrakesServiced, date, mileage, cost);
+            var @event = CreateCarEvent(CarEventTypes.BrakesServiced, date, mileage, cost);
 
             Mutate(@event);
 
@@ -88,7 +88,7 @@ namespace SimpleEventSourcing
 
             CheckOil();
 
-            var @event = CreateEvent(CarMaintenceTypes.OilChanged, date, mileage, cost);
+            var @event = CreateCarEvent(CarEventTypes.OilChanged, date, mileage, cost);
 
             Mutate(@event);
 
@@ -97,9 +97,9 @@ namespace SimpleEventSourcing
 
         private void CheckOil()
         {
-            if (_eventStream.LastOrDefault()?.CarMaintenceType == CarMaintenceTypes.OilChanged)
+            if (_eventStream.LastOrDefault()?.CarMaintenceType == CarEventTypes.OilChanged)
             {
-                throw new CarMaintenanceException("Didn't you just have the oil changed?");
+                throw new CarException("Didn't you just have the oil changed?");
             }
         }
 
@@ -107,14 +107,13 @@ namespace SimpleEventSourcing
         {
             if (mileage < Mileage)
             {
-                throw new CarMaintenanceException("No winding back the odometer!");
+                throw new CarException("No winding back the odometer!");
             }
         }
 
-        private CarMaintenanceEvent CreateEvent(CarMaintenceTypes type, DateTime date, int mileage, decimal cost)
-            => new CarMaintenanceEvent(AggregateID, Version + 1, type, date, mileage, cost);
+        private CarEvent CreateCarEvent(CarEventTypes type, DateTime date, int mileage, decimal cost) => new CarEvent(AggregateID, Version + 1, type, date, mileage, cost);
 
-        private void Mutate(CarMaintenanceEvent @event)
+        private void Mutate(CarEvent @event)
         {
             Version = @event.Version;
             Mileage = @event.Mileage;

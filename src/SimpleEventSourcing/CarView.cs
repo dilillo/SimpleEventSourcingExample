@@ -5,7 +5,7 @@ namespace SimpleEventSourcing
     /// <summary>
     /// Snapshot in time of the event stream.
     /// </summary>
-    public class CarMaintenanceView
+    public class CarView
     {
         public decimal AverageMaintenanceCost { get; set; }
 
