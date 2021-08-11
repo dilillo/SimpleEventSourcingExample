@@ -74,17 +74,6 @@ namespace SimpleEventSourcing
             _eventStream.Add(@event);
         }
 
-        public void EngineTuned(DateTime date, int mileage, decimal cost, int maxRpm)
-        {
-            CheckMileage(mileage);
-
-            var @event = CarEventFactory.Create<EngineTuned>(AggregateID, Version + 1, date, mileage, cost, i => i.MaxRpm = maxRpm);
-
-            Mutate(@event);
-
-            _eventStream.Add(@event);
-        }
-
         private void CheckOil()
         {
             if (_eventStream.LastOrDefault() is OilChanged)
