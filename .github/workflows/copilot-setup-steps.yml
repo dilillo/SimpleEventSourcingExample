@@ -27,3 +27,9 @@ jobs:
 
             - name: Restore dependencies
               run: dotnet restore
+
+            - name: Install uv
+              uses: astral-sh/setup-uv@v6
+
+            - name: Install Spec Kit
+              run: uv tool install specify-cli --from git+https://github.com/github/spec-kit.git@v0.8.1
