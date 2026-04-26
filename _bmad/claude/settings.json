@@ -1,0 +1,114 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ./.claude/hooks/party-mode-turn-lock.cjs",
+            "timeout": 5,
+            "statusMessage": "Checking party-mode fail-closed turn lock..."
+          }
+        ]
+      },
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ./.claude/hooks/runtime-policy-inject.cjs",
+            "timeout": 8,
+            "statusMessage": "Emitting runtime governance policy..."
+          },
+          {
+            "type": "command",
+            "command": "node ./.claude/hooks/pre-agent-summary.cjs",
+            "timeout": 5,
+            "statusMessage": "Generating agent call summary..."
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ./.claude/hooks/pre-continue-check.cjs",
+            "timeout": 8,
+            "statusMessage": "Checking architecture continue gate..."
+          }
+        ]
+      }
+    ],
+    "WorktreeCreate": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ./.claude/hooks/worktree-create-sibling.cjs",
+            "timeout": 30,
+            "statusMessage": "Creating worktree in sibling directory..."
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ./.claude/hooks/runtime-policy-inject.cjs --subagent-start",
+            "timeout": 8,
+            "statusMessage": "Injecting runtime governance policy..."
+          },
+          {
+            "type": "command",
+            "command": "node ./.claude/hooks/subagent-milestone-init.cjs",
+            "timeout": 5,
+            "statusMessage": "Initializing milestone tracking..."
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ./.claude/hooks/subagent-result-summary.cjs",
+            "timeout": 10,
+            "statusMessage": "Composing result summary..."
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ./.claude/hooks/post-tool-use.cjs",
+            "timeout": 8,
+            "statusMessage": "Queueing governance remediation reruns..."
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ./.claude/hooks/stop.cjs",
+            "timeout": 20,
+            "statusMessage": "Saving checkpoint and draining runtime queues..."
+          }
+        ]
+      }
+    ]
+  },
+  "env": {
+    "BMAD_HOOKS_VERBOSE": "0"
+  }
+}

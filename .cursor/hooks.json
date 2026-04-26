@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "command": "node .cursor/hooks/runtime-policy-inject.cjs --cursor-host --session-start"
+      },
+      {
+        "command": "node .cursor/hooks/runtime-dashboard-session-start.cjs"
+      }
+    ],
+    "preToolUse": [
+      {
+        "command": "node .cursor/hooks/runtime-policy-inject.cjs --cursor-host"
+      },
+      {
+        "command": "node .cursor/hooks/pre-continue-check.cjs"
+      }
+    ],
+    "subagentStart": [
+      {
+        "command": "node .cursor/hooks/runtime-policy-inject.cjs --cursor-host --subagent-start"
+      }
+    ],
+    "subagentStop": [
+      {
+        "command": "node .cursor/hooks/subagent-result-summary.cjs"
+      }
+    ],
+    "postToolUse": [
+      {
+        "command": "node .cursor/hooks/post-tool-use.cjs"
+      }
+    ]
+  }
+}
