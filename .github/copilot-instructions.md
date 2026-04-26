@@ -47,3 +47,8 @@ Tests live in `src/SimpleEventSourcing.UnitTests/UnitTests.cs` and use **xUnit**
 - Add a unit test in `UnitTests.cs` for every new behaviour or bug fix.
 - Do not modify existing tests unless the production behaviour they cover has intentionally changed.
 - Keep each commit focused on a single logical change.
+
+<!-- SPECKIT START -->
+For additional context about technologies to be used, project structure,
+shell commands, and other important information, read the current plan
+<!-- SPECKIT END -->
