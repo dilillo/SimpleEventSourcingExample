@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This repository demonstrates a simple Event Sourcing implementation in C# (.NET Core 3.1). The domain model is a car maintenance tracker built around the following concepts:
+This repository demonstrates a simple Event Sourcing implementation in C# (.NET 8). The domain model is a car maintenance tracker built around the following concepts:
 
 - **`CarAggregate`** – enforces business rules and accumulates domain events into an event stream.
 - **`CarEvent`** (and subtypes `OilChanged`, `BrakesServiced`, `BatteryTested`) – immutable records of things that happened.
@@ -21,7 +21,7 @@ SimpleEventSourcingExample.sln
 
 ## Coding Conventions
 
-- Target framework: **netcoreapp3.1**.
+- Target framework: **net8.0**.
 - Use **C#** with standard .NET naming conventions (PascalCase for types and public members, camelCase for locals).
 - Keep domain objects immutable where possible; state changes must be driven by `CarEvent` mutations inside `CarAggregate`.
 - All business-rule violations must throw `CarException`.
