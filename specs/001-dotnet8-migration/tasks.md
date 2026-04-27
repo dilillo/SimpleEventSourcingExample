@@ -24,7 +24,7 @@ description: "Task list template for feature implementation"
 
 **Purpose**: Confirm the .NET 8 SDK is available and establish the pre-migration baseline before making any changes.
 
-- [ ] T001 Verify .NET 8 SDK is installed (`dotnet --list-sdks`) and confirm current baseline by running `dotnet build` against `SimpleEventSourcingExample.sln` to record pre-migration state
+- [X] T001 Verify .NET 8 SDK is installed (`dotnet --list-sdks`) and confirm current baseline by running `dotnet build` against `SimpleEventSourcingExample.sln` to record pre-migration state
 
 **Checkpoint**: Environment confirmed ready — .NET 8 SDK present, current 3.1 build state known
 
@@ -48,8 +48,8 @@ description: "Task list template for feature implementation"
 
 ### Implementation for User Story 1
 
-- [ ] T002 [P] [US1] Update `<TargetFramework>` from `netcoreapp3.1` to `net8.0` in `src/SimpleEventSourcing/SimpleEventSourcing.csproj`
-- [ ] T003 [P] [US1] Update `<TargetFramework>` from `netcoreapp3.1` to `net8.0` in `src/SimpleEventSourcing.UnitTests/SimpleEventSourcing.UnitTests.csproj`
+- [X] T002 [P] [US1] Update `<TargetFramework>` from `netcoreapp3.1` to `net8.0` in `src/SimpleEventSourcing/SimpleEventSourcing.csproj`
+- [X] T003 [P] [US1] Update `<TargetFramework>` from `netcoreapp3.1` to `net8.0` in `src/SimpleEventSourcing.UnitTests/SimpleEventSourcing.UnitTests.csproj`
 
 **Checkpoint**: Both projects now declare `net8.0` as their target framework. User Story 1 implementation complete — build validation follows in Polish phase.
 
@@ -65,10 +65,10 @@ description: "Task list template for feature implementation"
 
 > All tasks below modify `src/SimpleEventSourcing.UnitTests/SimpleEventSourcing.UnitTests.csproj`. Apply sequentially (same file).
 
-- [ ] T004 [US2] Update `Microsoft.NET.Test.Sdk` from `16.7.1` to `17.12.0` in `src/SimpleEventSourcing.UnitTests/SimpleEventSourcing.UnitTests.csproj`
-- [ ] T005 [US2] Update `xunit` from `2.4.1` to `2.9.3` in `src/SimpleEventSourcing.UnitTests/SimpleEventSourcing.UnitTests.csproj`
-- [ ] T006 [US2] Update `xunit.runner.visualstudio` from `2.4.3` to `2.8.2` in `src/SimpleEventSourcing.UnitTests/SimpleEventSourcing.UnitTests.csproj`
-- [ ] T007 [US2] Update `coverlet.collector` from `1.3.0` to `6.0.4` in `src/SimpleEventSourcing.UnitTests/SimpleEventSourcing.UnitTests.csproj`
+- [X] T004 [US2] Update `Microsoft.NET.Test.Sdk` from `16.7.1` to `17.12.0` in `src/SimpleEventSourcing.UnitTests/SimpleEventSourcing.UnitTests.csproj`
+- [X] T005 [US2] Update `xunit` from `2.4.1` to `2.9.3` in `src/SimpleEventSourcing.UnitTests/SimpleEventSourcing.UnitTests.csproj`
+- [X] T006 [US2] Update `xunit.runner.visualstudio` from `2.4.3` to `2.8.2` in `src/SimpleEventSourcing.UnitTests/SimpleEventSourcing.UnitTests.csproj`
+- [X] T007 [US2] Update `coverlet.collector` from `1.3.0` to `6.0.4` in `src/SimpleEventSourcing.UnitTests/SimpleEventSourcing.UnitTests.csproj`
 
 **Checkpoint**: All package references now target .NET 8-compatible versions. User Stories 1 AND 2 are both complete — full validation follows.
 
@@ -78,9 +78,9 @@ description: "Task list template for feature implementation"
 
 **Purpose**: Run the three acceptance commands from `quickstart.md` to confirm all success criteria (SC-001 through SC-004) are satisfied before merging.
 
-- [ ] T008 Run `dotnet restore` from the repository root and confirm 0 errors and 0 warnings about `net8.0`-incompatible packages (SC-003)
-- [ ] T009 Run `dotnet build SimpleEventSourcingExample.sln` from the repository root and confirm build succeeds with 0 errors and 0 framework-targeting warnings (SC-001 / FR-002)
-- [ ] T010 Run `dotnet test` from the repository root and confirm output shows `Failed: 0, Passed: 4, Skipped: 0, Total: 4` with 0 regressions (SC-002 / FR-003)
+- [X] T008 Run `dotnet restore` from the repository root and confirm 0 errors and 0 warnings about `net8.0`-incompatible packages (SC-003)
+- [X] T009 Run `dotnet build SimpleEventSourcingExample.sln` from the repository root and confirm build succeeds with 0 errors and 0 framework-targeting warnings (SC-001 / FR-002)
+- [X] T010 Run `dotnet test` from the repository root and confirm output shows `Failed: 0, Passed: 4, Skipped: 0, Total: 4` with 0 regressions (SC-002 / FR-003)
 
 **Checkpoint**: All acceptance criteria met — migration is complete and ready to merge.
 
